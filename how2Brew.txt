@@ -1,0 +1,460 @@
+http://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/
+
+get the Xcode from the Mac App store: http://itunes.apple.com/us/app/xcode/id497799835?mt=12
+
+once installed, go to Xcode and install required components.
+
+go to the Preferences bar, and click on install next to 'Command line tools'
+
+you will have to get an apple developer ID -- you can use your itunes login.
+
+go to: http://developer.apple.com/downloads
+
+sign in with your ID
+
+search for command line tools - the search box is at the left hand side ...
+
+click on "Command line tools (OS X Mountain Lion) for Xcode"
+
+once downloaded, double click on the .dmg file.
+
+follow the prompts to install.
+
+launch terminal
+
+check gcc installed
+
+$ gcc --version
+
+get the brewer:
+
+$ ruby <(curl -fsSk https://raw.github.com/mxcl/homebrew/go)
+
+now
+
+$brew Doctor
+
+Errors:
+
+E1/
+
+Consider amending your PATH so that /usr/local/bin
+occurs before /usr/bin in your PATH.
+to do this
+
+$ sudo vi /etc/paths
+
+and then put /usr/local/bin on top of /usr/bin
+
+E2/
+
+Warning: Some directories in /usr/local/share/man aren't writable.
+This can happen if you "sudo make install" software that isn't managed
+by Homebrew. If a brew tries to add locale information to one of these
+directories, then the install will fail during the link step.
+You should probably `chown` them:
+
+    /usr/local/share/man/de
+    /usr/local/share/man/de/man1
+
+$ sudo chown [newowner] /usr/local/share/man/de
+$ sudo chown [newowner] /usr/local/share/man/de/man1
+
+
+E3/
+
+Warning: Unbrewed dylibs were found in /usr/local/lib.
+If you didn't put them there on purpose they could cause problems when
+building Homebrew formulae, and may need to be deleted.
+
+$ mkdir -p ~/brewInstallBup/lib/pkgconfig/
+$ mv /usr/local/lib/libt*.* ~/brewInstallBup/lib/
+
+and now try again ...
+
+$ brew doctor
+
+Your system is raring to brew.
+
+$ brew update
+
+Initialised empty Git repository in /usr/local/.git/
+
+remote: Counting objects: 75894, done.
+remote: Compressing objects: 100% (36987/36987), done.
+remote: Total 75894 (delta 51533), reused 60014 (delta 38092)
+Receiving objects: 100% (75894/75894), 10.79 MiB | 151 KiB/s, done.
+Resolving deltas: 100% (51533/51533), done.
+From https://github.com/mxcl/homebrew
+ * [new branch]      gh-pages   -> origin/gh-pages
+ * [new branch]      go         -> origin/go
+ * [new branch]      master     -> origin/master
+Checking out files: 100% (2325/2325), done.
+HEAD is now at c21552a cairomm: add recommended X11 dependency.
+Already up-to-date.
+
+Warning: "config" scripts exist outside your system or Homebrew directories.
+`./configure` scripts often look for *-config scripts to determine if
+software packages are installed, and what additional flags to use when
+compiling and linking.
+
+Having additional scripts in your path can confuse software installed via
+Homebrew if the config script overrides a system or Homebrew provided
+script of the same name. We found the following "config" scripts:
+
+    /Library/Frameworks/Python.framework/Versions/2.7/bin/python-config
+    /Library/Frameworks/Python.framework/Versions/2.7/bin/python2.7-config
+
+$ sudo rm -rf /Library/Frameworks/Python.framework/Versions/2.7/
+
+$ brew doctor
+
+Your system is raring to brew
+
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+# install ack
+$ brew install ack
+
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+# install RVM
+curl -L https://get.rvm.io | bash -s stable --ruby
+source /Users/mcooganj/.rvm/scripts/rvm
+
+# load RVM
+
+$ echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function' >> ~/.bash_profile
+
+reload .bash_profile
+$ source ~/.bash_profile
+
+$ rvm get head
+
+$ rvm requirements
+
+^^^^^^
+
+Notes for Mac OS X 10.7.4, Xcode 4.4.1.
+
+For MacRuby: Install LLVM first.
+
+For JRuby:  Install the JDK. See http://developer.apple.com/java/download/  # Current Java version "1.6.0_26"
+For IronRuby: Install Mono >= 2.6
+For Ruby 1.9.3: Install libksba # If using Homebrew, 'brew install libksba'
+
+To use an RVM installed Ruby as default, instead of the system ruby:
+
+    rvm install 1.8.7 # installs patch 357: closest supported version
+    rvm system ; rvm gemset export system.gems ; rvm 1.8.7 ; rvm gemset import system.gems # migrate your gems
+    rvm alias create default 1.8.7
+
+And reopen your terminal windows.
+
+Xcode and gcc:
+
+Right now Ruby requires gcc to compile, but Xcode 4.2 and later no longer ship with gcc. Instead they ship with llvm-gcc (to which gcc is a symlink) and clang, neither of which are supported for building Ruby. Xcode 4.1 was the last version to ship gcc, which was /usr/bin/gcc-4.2.
+
+Xcode 4.1 and earlier:
+- Ruby will build fine.
+
+Xcode 4.2 and later (including Command Line Tools for Xcode):
+- If you have gcc-4.2 (and friends) from an earlier Xcode version, Ruby will build fine.
+- If you don't have gcc-4.2, you have two options to get it:
+ * Install apple-gcc42 from Homebrew
+ * Install osx-gcc-installer
+
+  Homebrew:
+
+  If you are using Homebrew, you can install the apple-gcc42 and required libraries from homebrew/dupes:
+
+      brew update
+      brew tap homebrew/dupes
+      brew install autoconf automake apple-gcc42
+      rvm pkg install openssl
+
+  This can live side by side with an existing Xcode 4.2+ install or Command Line Tools for Xcode.
+
+  osx-gcc-installer:
+
+  If you don't use Homebrew, you can download and install osx-gcc-installer: https://github.com/kennethreitz/osx-gcc-installer.
+
+  Warning: Installing osx-gcc-installer on top of a recent Xcode is known to cause problems, so you must uninstall Xcode before installing osx-gcc-installer. Afterwards you may install Xcode 4.2+ or Command Line Tools for Xcode if you desire.
+
+  ** NOTE: Currently, Node.js is having issues building with osx-gcc-installer. The only fix is to install Xcode over osx-gcc-installer.
+
+^^^^^
+
+$ brew update
+$ brew tap homebrew/dupes
+$ brew install autoconf automake apple-gcc42
+$ rvm pkg install openssl
+$ rvm reinstall $(rvm list strings | tr "" ',')
+$ rvm all-gemsets do rvm gemset pristine
+$ brew install libskba
+$ rvm use 1.9.3 --default
+
+# test it
+$ ruby -v
+
+^^^^^^
+
+^^^^^^^^^^^^^^^^^^^^^
+
+# install ctags
+$ brew install ctags
+
+
+^^^^^^^^^^^^^^^^^^^^^^
+
+# install a fortran compiler - need this to compile scipy and R
+$ brew install gfortran
+
+^^^^^^^^^^^^^^^^^^^^^^
+
+# config my own git:
+$ git config --global user.name "Matthew Coogan Johnson"
+$ git config --global user.email "mcooganj@gmail.com"
+
+^^^^^^^^^^^^^^^^^^^^^^
+
+# install python 2.7.3:
+$ brew install python
+
+The Python framework is located at
+  /usr/local/Cellar/python/2.7.3/Frameworks/Python.framework
+
+You can find the Python demo at
+  /usr/local/share/python2.7/Extras
+
+You can `brew linkapps` to symlink "Idle" and the "Python Launcher".
+
+A "distutils.cfg" has been written, specifying the install-scripts folder as:
+  /usr/local/share/python
+
+If you install Python packages via "pip install x" or "python setup.py install"
+(or the outdated easy_install), any provided scripts will go into the
+install-scripts folder above, so you may want to add it to your PATH.
+
+The site-package directory for brewed Python:
+  /usr/local/lib/python2.7/site-packages
+
+Distribute and Pip have been installed. To update them
+  /usr/local/share/python/pip install --upgrade distribute
+  /usr/local/share/python/pip install --upgrade pip
+
+See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+Error: The linking step did not complete successfully
+The formula built, but is not symlinked into /usr/local
+You can try again using `brew link python'
+==> Summary
+/usr/local/Cellar/python/2.7.3: 5165 files, 80M, built in 6.7 minutes
+
+
+i got the following Error:
+
+Error: The linking step did not complete successfully
+The formula built, but is not symlinked into /usr/local
+You can try again using `brew link python'
+
+which was fixed via:
+
+$ brew link python
+
+also:
+
+A "distutils.cfg" has been written, specifying the install-scripts folder as:
+  /usr/local/share/python
+
+If you install Python packages via "pip install x" or "python setup.py install"
+(or the outdated easy_install), any provided scripts will go into the
+install-scripts folder above, so you may want to add it to your PATH.
+
+$ sudo vi /etc/paths
+
+added:
+
+/usr/local/share/python
+
+and i edited my .bash_profile to add the following:
+
+PATH="/usr/local/Cellar/python/2.7.3/Frameworks/Python.framework/Versions/2.7/bin:${PATH}"
+export PATH
+
+$ easy_install pip
+
+some virtual environment and other python development stuff:
+
+http://www.thisisthegreenroom.com/2011/installing-python-numpy-scipy-matplotlib-and-ipython-on-lion/#python
+
+$ sudo pip install virtualenv
+$ sudo pip install virtualenvwrapper
+$ sudo pip install numpy --upgrade (for some reason, i needed to add --upgrade to get it to jag)
+$ sudo pip install scipy
+$ sudo pip install ipython
+$ sudo pip install BeautifulSoup
+$ sudo pip install mechanize
+
+
+# there is a problem with matplotlib conflicting with libpng ... so workaround
+see: http://jholewinski.org/blog/installing-matplotlib-on-os-x-10-7-with-homebrew/
+$ cd $HOME
+$ git clone https://github.com/matplotlib/matplotlib.git
+$ cd matplotlib
+$ python setup.py build
+$ python setup.py install
+
+now test it out:
+
+$ python
+>>> import numpy
+>>> print numpy.__version__
+>>> print numpy.__file__
+... etc ...
+
+
+^^^^^ setting up vim ^^^^^
+
+# first, symlink your dotfiles ... http://mirnazim.org/writings/vim-plugins-i-use/
+
+$ ln -s ~/dotfiles/.vimrc ~/.vimrc
+$ ln -s ~/dotfiles/.Rprofile ~/.Rprofile
+$ ln -s ~/dotfiles/.bash_profile ~/.bash_profile
+$ ln -s ~/dotfiles/.gvimrc ~/.gvimrc
+
+
+http://lepture.com/work/vundle-vs-pathogen/
+
+# install vundle
+$ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+
+
+ ^^^^ a start (17 August) ^^^^
+filetype off                   " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required!
+oseundle 'gmarik/vundle'
+
+" My Bundles here:
+"
+" Repos on github
+Bundle 'tpope/vim-fugitive'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+Bundle 'tpope/vim-rails.git'
+Bundle 'ervandew/screen' "you must use this one, others don't clone.
+Bundle 'rson/vim-conque'
+Bundle 'vim-scripts/Vim-R-plugin'
+Bundle 'tpope/vim-surround'
+Bundle 'Raimondi/delimitMate'
+Bundle 'wincent/Command-T'
+Bundle 'mutewinter/vim-indent-guides'
+Bundle 'nanotech/jellybeans.vim'
+Bundle 'scrooloose/nerdtree'
+Bundle 'vim-scripts/taglist.vim'
+Bundle 'gotcha/vimpdb'
+Bundle 'vim-scripts/Gundo'
+Bundle 'kevinw/pyflakes-vim'
+Bundle 'vim-scripts/pep8'
+Bundle 'LaTeX-Box-Team/LaTeX-Box'
+Bundle 'docunext/closetag.vim'
+
+
+" vim-scripts repos
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+
+" non github repos
+Bundle 'git://git.wincent.com/command-t.git'
+" ...
+
+filetype plugin indent on     " required!
+
+ ^^^^ end .vimrc snippet ^^^^
+
+now open vim
+
+$ mvim
+
+and install the bundles
+
+:BundleInstall
+
+
+^^^^ making the bundles work! ^^^^
+
+Command-t
+
+$ cd ~/.vim/bundle/command-t/ruby/command-t
+$ rvm use system
+$ ruby extconf.rb
+$ export ARCHFLAGS="-arch x86_64"
+$ make
+$ sudo make install
+
+
+install sqlite3:
+
+gem install sqlite3
+
+test it:
+
+sqlite3 test.db
+
+SQLite version 3.7.13 2012-06-11 02:05:22
+Enter ".help" for instructions
+Enter SQL statements terminated with a ";"
+sqlite>
+
+An SQLite tutorial:
+http://zetcode.com/databases/sqlitetutorial/
+
+^^^^^^^
+
+installing a better terminal version of vim:
+
+brew don't have it by default...
+
+brew search vim
+
+yields:
+
+Apple distributes vim with OS X, you can find it in /usr/bin.
+
+... but there is an alternative:
+
+$ brew install mercurial
+
+$ brew install https://raw.github.com/Homebrew/homebrew-dupes/master/vim.rb
+
+now
+
+$ vim --version
+
+should yield the following:
+
+VIM - Vi IMproved 7.3 (2010 Aug 15, compiled Aug 15 2012 19:24:16)
+MacOS X (unix) version
+
+
+but i do prefer macvim (it's just that it's not ALWAYS possible:
+
+$ brew install macvim
+
+see: http://b4winckler.wordpress.com/2012/03/18/setting-up-xcode-4-3-for-macvim-homebrew-and-haskell/
+
+^^^^^^^^^^^^^^
+
+
+# install R
+$ brew install R
+
+note that this doesn't have the GUI ... but i don't want it
+
+^^^^^^^^^^^^^
+
+
