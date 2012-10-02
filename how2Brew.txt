@@ -1,5 +1,7 @@
 http://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/
 
+make some blogs that do what's done above ...
+
 get the Xcode from the Mac App store: http://itunes.apple.com/us/app/xcode/id497799835?mt=12
 
 once installed, go to Xcode and install required components.
