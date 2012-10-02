@@ -186,10 +186,15 @@ Xcode 4.2 and later (including Command Line Tools for Xcode):
 ^^^^^
 
 $ brew update
+
+# this is req'd to make the new ruby
 $ brew tap homebrew/dupes
 $ brew install autoconf automake apple-gcc42
 $ rvm pkg install openssl
+# end re-build ^^^^^
+
 $ rvm reinstall $(rvm list strings | tr "" ',')
+$ rvm reinstall all --force
 $ rvm all-gemsets do rvm gemset pristine
 $ brew install libskba
 $ rvm use 1.9.3 --default
@@ -215,6 +220,23 @@ $ brew install gfortran
 # config my own git:
 $ git config --global user.name "Matthew Coogan Johnson"
 $ git config --global user.email "mcooganj@gmail.com"
+
+# test to see if you have osxkeychain
+$ git credential-osxkeychain
+
+# if you do not:
+$ curl -s curl -s -O http://github-media-downloads.s3.amazonaws.com/osx/git-credential-osxkeychain
+
+chmod u+x git-credential-osxkeychain
+# Fix the permissions on the file so it can be run
+
+sudo mv git-credential-osxkeychain /usr/local/bin
+# Move the file so git can access it
+
+$ git config --global credential.helper osxkeychain
+# Set git to use the osxkeychain credential helper
+
+TODO: need to add more about setting up this git thingo ... how to clone and share etc.
 
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -387,7 +409,7 @@ and install the bundles
 
 ^^^^ making the bundles work! ^^^^
 
-Command-t
+Command-t -- couldn't get it to work...
 
 $ cd ~/.vim/bundle/command-t/ruby/command-t
 $ rvm use system
