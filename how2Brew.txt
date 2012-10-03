@@ -221,6 +221,7 @@ $ brew install gfortran
 ^^^^^^^^^^^^^^^^^^^^^^
 
 # config my own git:
+
 $ git config --global user.name "Matthew Coogan Johnson"
 $ git config --global user.email "mcooganj@gmail.com"
 
@@ -240,6 +241,20 @@ $ git config --global credential.helper osxkeychain
 # Set git to use the osxkeychain credential helper
 
 TODO: need to add more about setting up this git thingo ... how to clone and share etc.
+
+# set up a dir you want to commit
+$ mkdir gitDir
+$ cd gitDir
+$ touch README
+$ vi README
+# now add what you'd like to see to the README for the project directory
+$ git add .
+$ git commit -m "first commit for project gitDir"
+# create a directory on the git server to send your files into
+$ curl -u 'mcooganj' https://apr.github.com/user/repos -d '{"name":"gitDir"}'
+$ git remote add origin https://github.com/mcooganj/gitDir.git
+$ git push -u origin master
+
 
 ^^^^^^^^^^^^^^^^^^^^^^
 
