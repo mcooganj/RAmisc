@@ -225,17 +225,18 @@ $ brew install gfortran
 $ git config --global user.name "Matthew Coogan Johnson"
 $ git config --global user.email "mcooganj@gmail.com"
 
-# test to see if you have osxkeychain
+# Test for the cred helper
 $ git credential-osxkeychain
+# Usage: git credential-osxkeychain <get|store|erase>
 
 # if you do not:
-$ curl -s curl -s -O http://github-media-downloads.s3.amazonaws.com/osx/git-credential-osxkeychain
+$ curl -s -O http://github-media-downloads.s3.amazonaws.com/osx/git-credential-osxkeychain
 
-chmod u+x git-credential-osxkeychain
+$ chmod u+x git-credential-osxkeychain
 # Fix the permissions on the file so it can be run
 
-sudo mv git-credential-osxkeychain /usr/local/bin
-# Move the file so git can access it
+$ sudo mv git-credential-osxkeychain /usr/local/bin
+# Move the file so git can access it -- see $ which git to find destination
 
 $ git config --global credential.helper osxkeychain
 # Set git to use the osxkeychain credential helper
@@ -491,7 +492,9 @@ see: http://b4winckler.wordpress.com/2012/03/18/setting-up-xcode-4-3-for-macvim-
 
 
 # install R
-$ brew install R
+$ brew install R --env=std
+
+# you may want the extra Java stuff, as well as the symlink for Rstudio
 
 note that this doesn't have the GUI ... but i don't want it
 
